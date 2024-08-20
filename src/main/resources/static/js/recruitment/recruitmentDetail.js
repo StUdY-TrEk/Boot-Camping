@@ -10,6 +10,7 @@ const costTypeSelect = document.getElementById('costTypeSelect');
 const fieldTypeSelect = document.getElementById('fieldTypeSelect');
 const selectedCategories = document.getElementById('selectedCategories');
 const imageUpload = document.getElementById('imageUpload');
+const reviewSummary = document.getElementById('reviewSummary');
 
 let originalContent = {};
 let selectedCategoryList = {
@@ -196,6 +197,15 @@ saveButton.addEventListener('click', function() {
   });
 });
 
+
+// 리뷰 요약을 업데이트하는 함수
+function updateReviewSummary(summary) {
+  const reviewSummaryText = document.getElementById('reviewSummary-text');
+  if (reviewSummaryText && summary) {
+    reviewSummaryText.textContent = summary;
+  }
+}
+
 // 뷰 모드 업데이트
 function updateViewMode(data) {
   // 제목 업데이트
@@ -238,6 +248,9 @@ function updateViewMode(data) {
 
   // 학습 분야 드롭다운 업데이트
   document.querySelector('#fieldTypeSelect').value = data.trek;
+
+  // 리뷰 요약 업데이트 추가
+  updateReviewSummary(data.summary);
 
   // 태그 업데이트
   let tags = data.tags || [];

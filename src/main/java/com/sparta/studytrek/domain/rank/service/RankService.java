@@ -10,6 +10,7 @@ import com.sparta.studytrek.domain.rank.dto.RankResponseDto;
 import com.sparta.studytrek.domain.rank.entity.Rank;
 import com.sparta.studytrek.domain.rank.repository.RankRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class RankService {
@@ -67,17 +69,34 @@ public class RankService {
      */
     @Transactional(readOnly = true)
     public RankListResponseDto getAllRanks(Pageable pageable) {
-        Page<Rank> rankPage = rankRepository.findAllOrderByRankingAsc(pageable);
+        // 로그 추가 - 메서드 시작
+        log.info("getAllRanks 메서드 호출 - Pageable: {}", pageable);
+
+        Page<Rank> rankPage;
+        try {
+            rankPage = rankRepository.findAllOrderByRankingAsc(pageable);
+            log.info("랭크 데이터 페이징 조회 성공 - 총 페이지: {}, 총 요소: {}", rankPage.getTotalPages(), rankPage.getTotalElements());
+        } catch (Exception e) {
+            log.error("랭크 데이터 페이징 조회 실패", e);
+            throw e;  // 원래 예외를 다시 던져서 처리
+        }
+
         List<RankResponseDto> rankList = rankPage.getContent().stream()
-            .map(rank -> new RankResponseDto(
-                rank.getId(),
-                rank.getCamp().getId(),
-                rank.getCamp().getName(),
-                rank.getRanking(),
-                rank.getCamp().getImageUrl(),
-                rank.getCamp().getLikesCount()
-            ))
+            .map(rank -> {
+                log.info("Rank 데이터 매핑 - Rank ID: {}, Camp ID: {}", rank.getId(), rank.getCamp().getId());
+                return new RankResponseDto(
+                    rank.getId(),
+                    rank.getCamp().getId(),
+                    rank.getCamp().getName(),
+                    rank.getRanking(),
+                    rank.getCamp().getImageUrl(),
+                    rank.getCamp().getLikesCount()
+                );
+            })
             .toList();
+
+        // 로그 추가 - 메서드 종료
+        log.info("getAllRanks 메서드 종료 - 조회된 Rank 수: {}", rankList.size());
         return new RankListResponseDto(rankList, rankPage.getTotalPages(), rankPage.getTotalElements());
     }
 }
