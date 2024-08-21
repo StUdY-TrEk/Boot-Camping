@@ -103,7 +103,7 @@ document.addEventListener("DOMContentLoaded", function() {
     })
         .then(response => response.json())
         .then(data => {
-            if (data.data) {
+            if (data.data !== undefined) {
                 const likeCountElement = document.querySelector('.activity-card[data-activity="liked-bootcamps"] .activity-count');
                 likeCountElement.textContent = data.data;
             }
