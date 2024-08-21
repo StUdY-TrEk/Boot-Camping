@@ -1,5 +1,7 @@
 package com.sparta.studytrek.domain.question.service;
 
+import com.sparta.studytrek.common.exception.CustomException;
+import com.sparta.studytrek.common.exception.ErrorCode;
 import java.util.List;
 import java.util.stream.Collectors;
 
