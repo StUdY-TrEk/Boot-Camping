@@ -54,11 +54,16 @@ public enum ErrorCode {
     // Role
     ROLE_NOT_FOUND(HttpStatus.NOT_FOUND, "역할을 찾을 수 없습니다."),
 
-	//Question
+    //Question
     NOTFOUND_QUESTION(HttpStatus.BAD_REQUEST, "해당 질문은 존재하지 않습니다."),
+    QUESTION_UPDATE_NOT_AUTHORIZED(HttpStatus.BAD_REQUEST, "해당 질문을 수정할 권한이 없습니다."),
+    QUESTION_DELETE_NOT_AUTHORIZED(HttpStatus.BAD_REQUEST, "해당 질문을 삭제할 권한이 없습니다."),
 
     //Answer
     NOTFOUND_ANSWER(HttpStatus.BAD_REQUEST, "해당 답변은 존재하지 않습니다."),
+    ANSWER_UPDATE_NOT_AUTHORIZED(HttpStatus.BAD_REQUEST, "해당 답변을 수정할 권한이 없습니다."),
+    ANSWER_DELETE_NOT_AUTHORIZED(HttpStatus.BAD_REQUEST, "해당 답변을 삭제할 권한이 없습니다."),
+
 
     // recruitment
     NOTFOUND_RECRUITMENT(HttpStatus.BAD_REQUEST,"해당 모집글은 존재하지 않습니다."),

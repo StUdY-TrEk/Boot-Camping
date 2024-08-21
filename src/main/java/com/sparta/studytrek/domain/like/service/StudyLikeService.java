@@ -7,7 +7,11 @@ import com.sparta.studytrek.domain.like.entity.StudyLike;
 import com.sparta.studytrek.domain.like.repository.StudyLikeRepository;
 import com.sparta.studytrek.domain.study.entity.Study;
 import com.sparta.studytrek.domain.study.repository.StudyRepository;
+
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -58,5 +62,18 @@ public class StudyLikeService {
 
         studyLikeRepository.delete(studyLike);
         return studyLikeRepository.countLikeByStudyId(studyId);
+    }
+
+    @Transactional(readOnly = true)
+    public List<String> getLikedStudies(User user) {
+        List<StudyLike> likes = studyLikeRepository.findByUser(user);
+        return likes.stream()
+            .map(studyLike -> studyLike.getStudy().getTitle())
+            .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public int getLikedStudyCount(User user) {
+        return studyLikeRepository.countByUser(user);
     }
 }

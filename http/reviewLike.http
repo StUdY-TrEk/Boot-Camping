@@ -7,3 +7,13 @@ Authorization: Bearer {{accessToken}}
 DELETE  {{apiUrl}}/reviews/1/likes
 Content-Type: application/json
 Authorization: Bearer {{accessToken}}
+
+### 리뷰 좋아요 리스트 목록
+GET {{apiUrl}}/reviews/likes/list
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+### 리뷰 좋아요 개수
+GET {{apiUrl}}/reviews/likes/count
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}

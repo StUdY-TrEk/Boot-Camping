@@ -1,5 +1,8 @@
 package com.sparta.studytrek.domain.study.service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import com.sparta.studytrek.common.exception.CustomException;
 import com.sparta.studytrek.common.exception.ErrorCode;
 import com.sparta.studytrek.domain.auth.entity.User;
@@ -127,5 +130,18 @@ public class StudyService {
             .createdAt(study.getCreatedAt().toString())
             .modifiedAt(study.getModifiedAt().toString())
             .build();
+    }
+
+    @Transactional(readOnly = true)
+    public int countUserStudies(User user) {
+        return studyRepository.countByUserId(user.getId());
+    }
+
+    @Transactional(readOnly = true)
+    public List<String> listUserStudies(User user) {
+        List<Study> studies = studyRepository.findAllByUserIdOrderByCreatedAtDesc(user.getId());
+        return studies.stream()
+            .map(Study::getTitle)
+            .collect(Collectors.toList());
     }
 }

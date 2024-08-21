@@ -1,5 +1,7 @@
 package com.sparta.studytrek.domain.question.controller;
 
+import java.util.List;
+
 import com.sparta.studytrek.common.ApiResponse;
 import com.sparta.studytrek.common.ResponseText;
 import com.sparta.studytrek.domain.question.dto.QuestionRequestDto;
@@ -126,4 +128,29 @@ public class QuestionController {
             .build();
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
+
+    @GetMapping("/user/count")
+    public ResponseEntity<ApiResponse> countUserQuestions(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        int questionCount = questionService.countUserQuestions(userDetails.getUser());
+
+        ApiResponse response = ApiResponse.builder()
+            .msg(ResponseText.QUESTION_GET_COUNT.format())
+            .statuscode(String.valueOf(HttpStatus.OK.value()))
+            .data(questionCount)
+            .build();
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/user/list")
+    public ResponseEntity<ApiResponse> listUserQuestionList(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        List<String> questionList = questionService.listUserQuestions(userDetails.getUser());
+
+        ApiResponse response = ApiResponse.builder()
+            .msg(ResponseText.QUESTION_GET_LIST.format())
+            .statuscode(String.valueOf(HttpStatus.OK.value()))
+            .data(questionList)
+            .build();
+        return ResponseEntity.ok(response);
+    }
+
 }

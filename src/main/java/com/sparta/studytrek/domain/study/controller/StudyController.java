@@ -1,5 +1,7 @@
 package com.sparta.studytrek.domain.study.controller;
 
+import java.util.List;
+
 import com.sparta.studytrek.aop.StudyRoleCheck;
 import com.sparta.studytrek.common.ApiResponse;
 import com.sparta.studytrek.common.ResponseText;
@@ -86,6 +88,30 @@ public class StudyController {
             .data(study)
             .build();
         return ResponseEntity.ok(apiResponse);
+    }
+
+    @GetMapping("/user/count")
+    public ResponseEntity<ApiResponse> countUserStudies(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        int studyCount = studyService.countUserStudies(userDetails.getUser());
+
+        ApiResponse response = ApiResponse.builder()
+            .msg(ResponseText.STUDY_GET_COUNT.format())
+            .statuscode(String.valueOf(HttpStatus.OK.value()))
+            .data(studyCount)
+            .build();
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/user/list")
+    public ResponseEntity<ApiResponse> listUserStudies(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        List<String> studies = studyService.listUserStudies(userDetails.getUser());
+
+        ApiResponse response = ApiResponse.builder()
+            .msg(ResponseText.STUDY_GET_LIST.format())
+            .statuscode(String.valueOf(HttpStatus.OK.value()))
+            .data(studies)
+            .build();
+        return ResponseEntity.ok(response);
     }
 
     /**

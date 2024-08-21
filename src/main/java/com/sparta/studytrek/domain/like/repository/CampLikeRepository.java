@@ -6,6 +6,7 @@ import com.sparta.studytrek.domain.auth.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -16,4 +17,8 @@ public interface CampLikeRepository extends JpaRepository<CampLike, Long> {
 
     // 캠프와 사용자가 좋아요를 눌렀는지 여부 확인
     boolean existsByCampAndUser(Camp camp, User user);
+
+    List<CampLike> findByUser(User user);
+
+	int countByUser(User user);
 }

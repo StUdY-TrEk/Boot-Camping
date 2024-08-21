@@ -1,5 +1,7 @@
 package com.sparta.studytrek.domain.review.controller;
 
+import java.util.List;
+
 import com.sparta.studytrek.aop.ReviewRoleCheck;
 import com.sparta.studytrek.common.ApiResponse;
 import com.sparta.studytrek.common.ResponseText;
@@ -130,5 +132,29 @@ public class ReviewController {
             .data(responseDto)
             .build();
         return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    @GetMapping("/user/count")
+    public ResponseEntity<ApiResponse> countUserReviews(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        int reviewCount = reviewService.countUserReviews(userDetails.getUser());
+
+        ApiResponse response = ApiResponse.builder()
+            .msg(ResponseText.REVIEW_GET_COUNT.format())
+            .statuscode(String.valueOf(HttpStatus.OK.value()))
+            .data(reviewCount)
+            .build();
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/user/list")
+    public ResponseEntity<ApiResponse> listUserReviews(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        List<String> reviews = reviewService.listUserReviews(userDetails.getUser());
+
+        ApiResponse response = ApiResponse.builder()
+            .msg(ResponseText.REVIEW_GET_LIST.format())
+            .statuscode(String.valueOf(HttpStatus.OK.value()))
+            .data(reviews)
+            .build();
+        return ResponseEntity.ok(response);
     }
 }

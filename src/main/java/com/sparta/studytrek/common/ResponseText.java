@@ -35,6 +35,8 @@ public enum ResponseText {
     QUESTION_DELETE_SUCCESS("질문 삭제 성공"),
     QUESTION_GET_ALL_SUCCESS("질문 전체 조회 성공"),
     QUESTION_GET_SUCCESS("질문 단건 조회 성공"),
+    QUESTION_GET_COUNT("질문 개수 조회 성공"),
+    QUESTION_GET_LIST("질문 리스트 조회 성공"),
 
     // recruitment
     RECRUITMENT_CREATE_SUCCESS("모집글 작성 성공"),
@@ -51,6 +53,8 @@ public enum ResponseText {
     REVIEW_DELETE_SUCCESS("리뷰 삭제 성공"),
     REVIEW_GET_ALL_SUCCESS("리뷰 전체 조회 성공"),
     REVIEW_GET_SUCCESS("리뷰 단건 조회 성공"),
+    REVIEW_GET_COUNT("리뷰 개수 조회 성공"),
+    REVIEW_GET_LIST("리뷰 리스트 조회 성공"),
 
     // study
     STUDY_CREATE_SUCCESS("스터디 모집글 작성 성공"),
@@ -58,6 +62,8 @@ public enum ResponseText {
     STUDY_DELETE_SUCCESS("스터디 모집글 삭제 성공"),
     STUDY_GET_ALL_SUCCESS("스터디 전체 조회 성공"),
     STUDY_GET_SUCCESS("스터디 단건 조회 성공"),
+    STUDY_GET_COUNT("스터디 개수 조회 성공"),
+    STUDY_GET_LIST("스터디 리스트 조회 성공"),
 
     // rank
     RANK_CREATE_SUCCESS("순위 생성 성공"),
@@ -77,6 +83,8 @@ public enum ResponseText {
     ANSWER_DELETE_SUCCESS("답변 삭제 성공"),
     ANSWER_GET_ALL_SUCCESS("답변 전체 조회 성공"),
     ANSWER_GET_SUCCESS("답변 단건 조회 성공"),
+    ANSWER_GET_COUNT("답변 개수 조회 성공"),
+    ANSWER_GET_LIST("답변 리스트 조회 성공"),
 
     // reply
     REPLY_CREATE_SUCCESS("대댓글 작성 성공"),
@@ -88,6 +96,12 @@ public enum ResponseText {
     // like
     LIKE_RECRUIT_SUCCESS("해당 게시글에 좋아요 성공 : %d"),
     LIKE_CALL_OFF_SUCCESS("해당 게시글에 좋아요 취소 : %d"),
+    GET_LIKE_CAMP_LIST("좋아요한 캠프 리스트를 불러왔습니다."),
+    GET_LIKE_CAMP_COUNT("좋아요한 캠프의 개수를 불러왔습니다."),
+    GET_LIKE_STUDY_LIST("좋아요한 스터디 리스트를 불러왔습니다."),
+    GET_LIKE_STUDY_COUNT("좋아요한 스터디 개수를 불러왔습니다."),
+    GET_LIKE_REVIEW_LIST("좋아요한 리뷰 리스트를 불러왔습니다."),
+    GET_LIKE_REVIEW_COUNT("좋아요한 리뷰 개수를 불러왔습니다."),
 
     // SUMMARY
     SUMMARY_CREATE_SUCCESS("요약 성공"),

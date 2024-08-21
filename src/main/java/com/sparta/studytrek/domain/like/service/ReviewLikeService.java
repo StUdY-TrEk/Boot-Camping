@@ -1,5 +1,12 @@
 package com.sparta.studytrek.domain.like.service;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.sparta.studytrek.common.exception.CustomException;
 import com.sparta.studytrek.common.exception.ErrorCode;
 import com.sparta.studytrek.domain.auth.entity.User;
@@ -7,10 +14,8 @@ import com.sparta.studytrek.domain.like.entity.ReviewLike;
 import com.sparta.studytrek.domain.like.repository.ReviewLikeRepository;
 import com.sparta.studytrek.domain.review.entity.Review;
 import com.sparta.studytrek.domain.review.repository.ReviewRepository;
-import java.util.Optional;
+
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -57,5 +62,18 @@ public class ReviewLikeService {
 
         reviewLikeRepository.delete(reviewLike);
         return reviewLikeRepository.countLikeByReviewId(reviewId);
+    }
+
+    @Transactional(readOnly = true)
+    public List<String> getLikedReviews(User user) {
+        return reviewLikeRepository.findAllByUserId(user.getId())
+            .stream()
+            .map(reviewLike -> reviewLike.getReview().getTitle())
+            .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public int getLikedReviewCount(User user) {
+        return reviewLikeRepository.countByUserId(user.getId());
     }
 }

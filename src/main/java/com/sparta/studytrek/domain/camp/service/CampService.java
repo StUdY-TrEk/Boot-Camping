@@ -18,6 +18,8 @@ import jakarta.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -135,5 +137,16 @@ public class CampService {
             rankRepository.save(campRank);
             rank++;
         }
+    }
+
+    public int getLikedCampsCount(User user) {
+        return campLikeRepository.countByUser(user);
+    }
+
+    public List<String> getLikedCamps(User user) {
+        List<CampLike> likes = campLikeRepository.findByUser(user);
+		return likes.stream()
+            .map(campLike -> campLike.getCamp().getName())
+            .collect(Collectors.toList());
     }
 }

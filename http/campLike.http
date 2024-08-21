@@ -17,3 +17,13 @@ Authorization: Bearer {{accessToken}}
 DELETE  {{apiUrl}}/camps/1/like
 Content-Type: application/json
 Authorization: Bearer {{accessToken}}
+
+### 캠프 좋아요 리스트 조회
+GET {{apiUrl}}/camps/like/list
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+### 캠프 좋아요 개수 조회
+GET {{apiUrl}}/camps/like/count
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}

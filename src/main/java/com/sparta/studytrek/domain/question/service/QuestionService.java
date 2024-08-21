@@ -1,9 +1,9 @@
 package com.sparta.studytrek.domain.question.service;
 
-import com.sparta.studytrek.common.exception.CustomException;
-import com.sparta.studytrek.common.exception.ErrorCode;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import com.sparta.studytrek.domain.auth.entity.User;
-import com.sparta.studytrek.domain.auth.service.UserService;
 import com.sparta.studytrek.domain.question.dto.QuestionRequestDto;
 import com.sparta.studytrek.domain.question.dto.QuestionResponseDto;
 import com.sparta.studytrek.domain.question.entity.Question;
@@ -46,6 +46,9 @@ public class QuestionService {
     public QuestionResponseDto updateQuestion(Long id, QuestionRequestDto requestDto, User user) {
         Question question = questionRepository.findByQuestionId(id);
         question.update(requestDto);
+        if (!question.getUser().getId().equals(user.getId())) {
+            throw new CustomException(ErrorCode.QUESTION_UPDATE_NOT_AUTHORIZED);
+        }
         return new QuestionResponseDto(question);
     }
 
@@ -57,6 +60,9 @@ public class QuestionService {
      */
     public void deleteQuestion(Long id, User user) {
         Question question = questionRepository.findByQuestionId(id);
+        if (!question.getUser().getId().equals(user.getId())) {
+            throw new CustomException(ErrorCode.QUESTION_DELETE_NOT_AUTHORIZED);
+        }
         questionRepository.delete(question);
     }
 
@@ -80,5 +86,16 @@ public class QuestionService {
     public QuestionResponseDto getQuestion(Long id) {
         Question question = questionRepository.findByQuestionId(id);
         return new QuestionResponseDto(question);
+    }
+
+    public int countUserQuestions(User user) {
+        return questionRepository.countByUser(user);
+    }
+
+    public List<String> listUserQuestions(User user) {
+        List<Question> questions = questionRepository.findAllByUserOrderByCreatedAtDesc(user);
+        return questions.stream()
+            .map(Question::getTitle)
+            .collect(Collectors.toList());
     }
 }

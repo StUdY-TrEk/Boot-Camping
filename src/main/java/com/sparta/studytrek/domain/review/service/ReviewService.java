@@ -5,7 +5,6 @@ import com.sparta.studytrek.common.exception.ErrorCode;
 import com.sparta.studytrek.domain.auth.entity.User;
 import com.sparta.studytrek.domain.auth.service.UserService;
 import com.sparta.studytrek.domain.camp.entity.Camp;
-import com.sparta.studytrek.domain.camp.repository.CampRepository;
 import com.sparta.studytrek.domain.camp.service.CampService;
 import com.sparta.studytrek.domain.review.dto.ReviewRequestDto;
 import com.sparta.studytrek.domain.review.dto.ReviewResponseDto;
@@ -145,5 +144,16 @@ public class ReviewService {
             .collect(Collectors.toList());
 
         return summaryService.summarizeText(contents, campId).orElse("");
+    }
+
+    public int countUserReviews(User user) {
+        return reviewRepository.countByUserId(user.getId());
+    }
+
+    public List<String> listUserReviews(User user) {
+        List<Review> reviews = reviewRepository.findAllByUserIdOrderByCreatedAtDesc(user.getId());
+        return reviews.stream()
+            .map(Review::getTitle)
+            .collect(Collectors.toList());
     }
 }

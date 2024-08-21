@@ -1,5 +1,7 @@
 package com.sparta.studytrek.domain.study.repository;
 
+import java.util.List;
+
 import com.sparta.studytrek.common.exception.CustomException;
 import com.sparta.studytrek.common.exception.ErrorCode;
 import com.sparta.studytrek.domain.study.entity.Study;
@@ -13,4 +15,8 @@ public interface StudyRepository extends JpaRepository<Study, Long>, StudyReposi
     default Study findByStudyId(Long studyId){
         return findById(studyId).orElseThrow(() -> new CustomException(ErrorCode.STUDY_NOT_FOUND));
     }
+
+    int countByUserId(Long userId);
+
+    List<Study> findAllByUserIdOrderByCreatedAtDesc(Long userId);
 }

@@ -136,4 +136,27 @@ public class AnswerController {
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
+    @GetMapping("/user/count")
+    public ResponseEntity<ApiResponse> countUserAnswers(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        int answerCount = answerService.countUserAnswers(userDetails.getUser());
+
+        ApiResponse response = ApiResponse.builder()
+            .msg(ResponseText.ANSWER_GET_COUNT.format())
+            .statuscode(String.valueOf(HttpStatus.OK.value()))
+            .data(answerCount)
+            .build();
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/user/list")
+    public ResponseEntity<ApiResponse> listUserAnswers(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        List<String> answers = answerService.listUserAnswers(userDetails.getUser());
+
+        ApiResponse response = ApiResponse.builder()
+            .msg(ResponseText.ANSWER_GET_LIST.format())
+            .statuscode(String.valueOf(HttpStatus.OK.value()))
+            .data(answers)
+            .build();
+        return ResponseEntity.ok(response);
+    }
 }

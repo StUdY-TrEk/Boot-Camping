@@ -17,4 +17,8 @@ public interface ReviewRepository extends JpaRepository<Review, Long>, ReviewRep
     int countByCampId(Long campId);
 
     List<Review> findTop10ByCampIdOrderByCreatedAtDesc(Long campId);
+
+	int countByUserId(Long userId);
+
+    List<Review> findAllByUserIdOrderByCreatedAtDesc(Long userId);
 }

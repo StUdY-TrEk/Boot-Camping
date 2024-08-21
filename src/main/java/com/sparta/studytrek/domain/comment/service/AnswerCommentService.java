@@ -1,6 +1,8 @@
 package com.sparta.studytrek.domain.comment.service;
 
 import com.sparta.studytrek.common.ResponseText;
+import com.sparta.studytrek.common.exception.CustomException;
+import com.sparta.studytrek.common.exception.ErrorCode;
 import com.sparta.studytrek.domain.answer.entity.Answer;
 import com.sparta.studytrek.domain.answer.repository.AnswerRepository;
 import com.sparta.studytrek.domain.auth.entity.User;
@@ -65,6 +67,9 @@ public class AnswerCommentService {
         Question question = questionRepository.findByQuestionId(questionId);
         Answer answer = answerRepository.findByAnswerId(answerId);
         AnswerComment answerComment = answerCommentRepository.findByAnswerCommentId(commentId);
+        if (!answerComment.getUser().getId().equals(user.getId())) {
+            throw new CustomException(ErrorCode.COMMENT_UPDATE_NOT_AUTHORIZED);
+        }
         answerComment.update(requestDto);
         return new AnswerCommentResponseDto(answerComment);
     }
@@ -81,6 +86,9 @@ public class AnswerCommentService {
         Question question = questionRepository.findByQuestionId(questionId);
         Answer answer = answerRepository.findByAnswerId(answerId);
         AnswerComment answerComment = answerCommentRepository.findByAnswerCommentId(commentId);
+        if (!answerComment.getUser().getId().equals(user.getId())) {
+            throw new CustomException(ErrorCode.COMMENT_DELETE_NOT_AUTHORIZED);
+        }
         answerCommentRepository.delete(answerComment);
     }
 

@@ -1,6 +1,8 @@
 package com.sparta.studytrek.domain.answer.service;
 
 import com.sparta.studytrek.common.ResponseText;
+import com.sparta.studytrek.common.exception.CustomException;
+import com.sparta.studytrek.common.exception.ErrorCode;
 import com.sparta.studytrek.domain.answer.dto.AnswerRequestDto;
 import com.sparta.studytrek.domain.answer.dto.AnswerResponseDto;
 import com.sparta.studytrek.domain.answer.entity.Answer;
@@ -12,6 +14,8 @@ import com.sparta.studytrek.notification.service.NotificationService;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
+
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.stereotype.Service;
@@ -60,6 +64,9 @@ public class AnswerService {
     public AnswerResponseDto updateAnswer(Long questionId, Long answerId, AnswerRequestDto requestDto, User user) {
         Question question = questionRepository.findByQuestionId(questionId);
         Answer answer = answerRepository.findByAnswerId(answerId);
+        if (!answer.getUser().getId().equals(user.getId())) {
+            throw new CustomException(ErrorCode.ANSWER_UPDATE_NOT_AUTHORIZED);
+        }
         answer.update(requestDto);
         return new AnswerResponseDto(answer);
     }
@@ -74,6 +81,9 @@ public class AnswerService {
     public void deleteAnswer(Long questionId, Long answerId, User user) {
         Question question = questionRepository.findByQuestionId(questionId);
         Answer answer = answerRepository.findByAnswerId(answerId);
+        if (!answer.getUser().getId().equals(user.getId())) {
+            throw new CustomException(ErrorCode.ANSWER_DELETE_NOT_AUTHORIZED);
+        }
         answerRepository.delete(answer);
     }
 
@@ -98,5 +108,16 @@ public class AnswerService {
     public AnswerResponseDto getAnswer(Long questionId, Long answerId) {
         Answer answer = answerRepository.findByQuestionIdAndAnswerId(questionId, answerId);
         return new AnswerResponseDto(answer);
+    }
+
+    public List<String> listUserAnswers(User user) {
+        List<Answer> answers = answerRepository.findAllByUserOrderByCreatedAtDesc(user);
+        return answers.stream()
+            .map(Answer::getContent)
+            .collect(Collectors.toList());
+    }
+
+    public int countUserAnswers(User user) {
+        return answerRepository.countByUser(user);
     }
 }
