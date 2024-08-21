@@ -526,12 +526,7 @@ function addReply(commentId) {
         },
         body: JSON.stringify({ content: replyContent })
     })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('서버 응답이 올바르지 않습니다.');
-        }
-        return response.json();
-    })
+    .then(response => response.json())
     .then(data => {
         if (data.statuscode === "201") {
             replyInput.value = ''; // 입력 필드 비우기
@@ -632,12 +627,7 @@ function deleteReply(commentId, replyId) {
                 'Authorization': `Bearer ${localStorage.getItem('accessToken')}` // Access Token 추가
             }
         })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('서버 응답이 올바르지 않습니다.');
-            }
-            return response.json();
-        })
+        .then(response => response.json())
         .then(data => {
             if (data.statuscode === "204") {
                 fetchReplies(currentReviewId, commentId); // 대댓글 목록 갱신

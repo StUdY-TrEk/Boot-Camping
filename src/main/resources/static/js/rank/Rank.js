@@ -50,6 +50,7 @@ function displayRanks(data) {
   data.forEach(rank => {
     const campId = rank.campId;
     const campName = rank.campName;
+    const description = rank.description;
     const campImage = rank.campImage;
     const ranking = rank.ranking;
     const likesCount = rank.likesCount || 0;
@@ -71,6 +72,7 @@ function displayRanks(data) {
         <div class="emoji">${emoji}</div>
         <h3>${campName}</h3>
         <img src="${campImage}" alt="${campName} Image" class="camp-image">
+        <p class="camp-description">${description}</p>
         <div class="rating">${ranking}등</div>
     `;
 

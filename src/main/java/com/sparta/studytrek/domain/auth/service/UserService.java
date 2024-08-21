@@ -12,6 +12,7 @@ import com.sparta.studytrek.domain.auth.entity.User;
 import com.sparta.studytrek.domain.auth.entity.UserRoleEnum;
 import com.sparta.studytrek.domain.auth.entity.UserStatusEnum;
 import com.sparta.studytrek.domain.auth.entity.UserType;
+import com.sparta.studytrek.domain.auth.repository.CampUserRepository;
 import com.sparta.studytrek.domain.auth.repository.RoleRepository;
 import com.sparta.studytrek.domain.auth.repository.StatusRepository;
 import com.sparta.studytrek.domain.auth.repository.UserRepository;
@@ -30,6 +31,7 @@ import org.springframework.stereotype.Service;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final CampUserRepository campUserRepository;
     private final RoleRepository roleRepository;
     private final StatusRepository statusRepository;
     private final PasswordEncoder passwordEncoder;
@@ -51,13 +53,13 @@ public class UserService {
         // 회원 중복 확인
         Optional<User> checkUsername = userRepository.findByUsername(username);
         if (checkUsername.isPresent()) {
-            throw new IllegalArgumentException("중복된 사용자가 존재합니다.");
+            throw new CustomException(ErrorCode.DUPLICATE_USER);
         }
 
         // ROLE 확인
         UserRoleEnum roleEnum = UserRoleEnum.valueOf(requestDto.getUserRole());
         Role role = roleRepository.findByRole(roleEnum)
-                .orElseThrow(() -> new IllegalArgumentException("Role not found"));
+                .orElseThrow(() -> new CustomException(ErrorCode.ROLE_NOT_FOUND));
 
         // 사용자 저장
         User user = new User(username, password, requestDto.getName(), requestDto.getUserAddr(), UserType.NORMAL, role);
@@ -68,14 +70,14 @@ public class UserService {
             UserStatusEnum userStatus = UserStatusEnum.getDefault();
 
             Status findStatus = statusRepository.findByStatus(userStatus)
-                    .orElseThrow(() -> new IllegalArgumentException("Status not found"));
+                    .orElseThrow(() -> new CustomException(ErrorCode.STATUS_NOT_FOUND));
 
             user.addStatus(findStatus);
         } else if (roleEnum == UserRoleEnum.BOOTCAMP) {
             // BOOTCAMP 일 경우 campUser 저장
             String campName = requestDto.getCampName();
             if (campName == null || campName.isEmpty()) {
-                throw new IllegalArgumentException("Camp name is required for BOOTCAMP role");
+                throw new CustomException(ErrorCode.CAMP_NAME_REQUIRED_FOR_BOOTCAMP_ROLE);
             }
 
             Camp camp = campService.findByName(campName);
@@ -179,8 +181,6 @@ public class UserService {
      */
     @Transactional
     public List<String> getUserCampNames(Long userId) {
-        return userRepository.findCampNamesById(userId);
+        return campUserRepository.findCampNamesById(userId);
     }
-
-
 }

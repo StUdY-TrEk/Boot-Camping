@@ -28,7 +28,7 @@
             <a class="sidebar-link" th:href="@{/rank}">
                 <img th:src="@{/images/icon-board.svg}" alt="icon" /><span>Rank</span>
             </a>
-            <a class="sidebar-link" th:href="@{/chat}">
+            <a class="sidebar-link" th:href="@{/chat}" onclick="checkTokenAndRedirect(event)">
                 <img th:src="@{/images/icon-board.svg}" alt="icon" /><span>실시간 채팅</span>
             </a>
         </nav>
@@ -43,6 +43,38 @@
             <img th:src="@{/images/icon-hide-sidebar.svg}" alt="Hide Sidebar Icon" />
         </button>
     </div>
+    <script>
+        function checkTokenAndRedirect(event) {
+            const token = localStorage.getItem('accessToken');
+            if (!token) {
+                event.preventDefault(); // 링크 기본 동작을 막음
+                Swal.fire({
+                    title: '접근 실패',
+                    text: '로그인이 필요한 서비스입니다.',
+                    icon: 'error',
+                    confirmButtonText: '확인'
+                }).then(() => {
+                    window.location.href = '/auth';
+                });
+            }
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+            const path = window.location.pathname;
+            if (path.startsWith('/chat')) {
+                const token = localStorage.getItem('accessToken');
+                if (!token) {
+                    Swal.fire({
+                        title: '접근 실패',
+                        text: '로그인이 필요한 페이지입니다.',
+                        icon: 'error',
+                        confirmButtonText: '확인'
+                    }).then(() => {
+                        window.location.href = '/auth'; // 로그인 페이지로 리다이렉트
+                    });
+                }
+            }
+        });
+    </script>
 </div>
 </body>
 </html>

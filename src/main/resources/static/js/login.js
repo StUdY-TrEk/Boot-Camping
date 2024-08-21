@@ -368,7 +368,7 @@ document.getElementById('signInButton').addEventListener('click', async (event) 
         } else {
             Swal.fire({
                 title: '로그인 실패',
-                text: result.message || '알 수 없는 오류가 발생했습니다.',
+                text: result.msg || '알 수 없는 오류가 발생했습니다.',
                 icon: 'error',
                 confirmButtonText: '확인'
             });
@@ -383,32 +383,3 @@ document.getElementById('signInButton').addEventListener('click', async (event) 
         });
     }
 });
-
-function onLogoutSuccess() {
-    const loginButton = document.querySelector('.add-task-button');
-    loginButton.textContent = 'Login';
-    loginButton.onclick = () => location.href = '/auth';
-    alert('로그아웃 성공');
-}
-
-async function onLogout() {
-    try {
-        const response = await fetch('/api/auth/logout', {
-            method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
-                'Content-Type': 'application/json'
-            }
-        });
-
-        if (response.ok) {
-            localStorage.removeItem('accessToken');
-            localStorage.removeItem('refreshToken');
-            onLogoutSuccess();
-        } else {
-            alert('로그아웃 실패');
-        }
-    } catch (error) {
-        alert('로그아웃 중 오류 발생: ' + error.message);
-    }
-}

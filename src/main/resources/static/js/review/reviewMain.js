@@ -48,7 +48,7 @@ function createReviewCard(review) {
             </div>
             <div class="review-stars">${'★'.repeat(review.scope)}${'☆'.repeat(5 - review.scope)}</div>
             <p class="reviews review-content">${review.content}</p>
-            <span class="reviews review-author">- ${review.author || '작성자 미상'}</span>
+            <span class="reviews review-camp-name">- ${review.campName || '캠프 이름 미상'}</span>
         </div>
     `;
 }

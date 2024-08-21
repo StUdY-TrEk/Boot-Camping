@@ -10,16 +10,16 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 @RequiredArgsConstructor
-public class UserRepositoryImpl implements UserRepositoryCustom {
+public class CampUserRepositoryImpl implements CampUserRepositoryCustom {
 
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public List<String> findCampNamesById(Long id) {
+    public List<String> findCampNamesById(Long userId) {
         return jpaQueryFactory
             .select(camp.name)
             .from(campUser)
-            .where(campUser.user.id.eq(id))
+            .where(campUser.user.id.eq(userId))
             .fetch();
     }
 }

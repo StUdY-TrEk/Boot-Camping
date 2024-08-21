@@ -10,7 +10,8 @@ document.getElementById('reviewForm').addEventListener('submit', function(e) {
     const subTitle = document.getElementById('sub-title').value;
 
     // 데이터 유효성 검증
-    if (!selectedCategory || !selectedTrack || !reviewTitle || !rating || !reviewContent || !subTitle) {
+    if (!selectedCategory || !selectedTrack || !reviewTitle || !rating
+        || !reviewContent || !subTitle) {
         Swal.fire({
             title: '입력 오류',
             text: '모든 필드를 올바르게 입력해 주세요.',
@@ -30,10 +31,7 @@ document.getElementById('reviewForm').addEventListener('submit', function(e) {
         campName: subTitle  // 캠프 이름으로 사용
     };
 
-    // URL 가져오기
-    const submitUrl = document.querySelector('.submit-button').getAttribute('data-submit-url');
-
-    fetch(submitUrl, {
+    fetch(`/api/reviews`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -41,6 +39,7 @@ document.getElementById('reviewForm').addEventListener('submit', function(e) {
         },
         body: JSON.stringify(reviewData)
     })
+    .then(response => response.json())
     .then(data => {
         if (data.statuscode === "201") {
             Swal.fire({
@@ -60,7 +59,7 @@ document.getElementById('reviewForm').addEventListener('submit', function(e) {
         } else {
             Swal.fire({
                 title: '리뷰 작성 실패',
-                text: data.message || '리뷰 작성 중 오류가 발생했습니다.',
+                text: data.msg || '리뷰 작성 중 오류가 발생했습니다.',
                 icon: 'error',
                 confirmButtonText: '확인'
             });
@@ -69,13 +68,12 @@ document.getElementById('reviewForm').addEventListener('submit', function(e) {
     .catch(error => {
         Swal.fire({
             title: '네트워크 오류',
-            text: error.message || '네트워크 오류가 발생했습니다.',
+            text: error.msg || '네트워크 오류가 발생했습니다.',
             icon: 'error',
             confirmButtonText: '확인'
         });
     });
 });
-
 
 function cancelReview() {
     if (confirm('작성 중인 리뷰를 취소하시겠습니까?')) {

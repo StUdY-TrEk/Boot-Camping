@@ -85,6 +85,9 @@ function onLogoutSuccess() {
     loginButton.onclick = () => location.href = '/auth';
     adminButton.style.display = 'none'; // 로그아웃 후 ADMIN 버튼 숨기기
 
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
+
     Swal.fire({
         toast: true,
         position: 'center',
@@ -138,8 +141,6 @@ async function onLogout() {
         });
 
         if (response.ok) {
-            localStorage.removeItem('accessToken');
-            localStorage.removeItem('refreshToken');
             onLogoutSuccess();
         } else {
             alert('로그아웃 실패');

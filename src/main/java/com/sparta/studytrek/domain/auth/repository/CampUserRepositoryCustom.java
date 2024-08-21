@@ -4,6 +4,6 @@ import java.util.List;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface UserRepositoryCustom {
-    List<String> findCampNamesById(Long id);
+public interface CampUserRepositoryCustom {
+    List<String> findCampNamesById(Long userId);
 }

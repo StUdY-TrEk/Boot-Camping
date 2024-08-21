@@ -5,9 +5,16 @@ body {
 }
 
 .emoji {
-    font-size: 2rem; /* 이모지 크기 조정 */
+    font-size: 2rem;
     display: inline-block;
     margin-bottom: 15px;
+}
+
+.camp-description {
+    font-size: 17px;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
 }
 
 .container {
